@@ -1,0 +1,13 @@
+[
+  { "id": "attention",   "kind": "note",    "title": "Attention, from first principles",  "date": "12 Oct", "tags": "AI · transformers",   "excerpt": "Each token asks a question, every other token offers an answer, and the weights say how much to listen to each one…", "vis": "public" },
+  { "id": "data-flow",   "kind": "drawing", "title": "Sketch: how data moves through a model", "date": "10 Oct", "tags": "AI · diagram", "vis": "public" },
+  { "id": "quantization","kind": "concept", "title": "Quantization trade-offs",           "date": "08 Oct", "tags": "AI · performance",    "vis": "public" },
+  { "id": "hoisting",    "kind": "source",  "title": "Official guide on state hoisting",  "date": "06 Oct", "tags": "Android · docs",      "domain": "developer.android.com", "vis": "public" },
+  { "id": "pkg-cheat",   "kind": "note",    "title": "Package management cheatsheet",     "date": "03 Oct", "tags": "Linux · tooling",     "excerpt": "Install, remove, query, and clean — the handful of commands I actually reach for, with the flags explained…", "vis": "public" },
+  { "id": "soft-ui",     "kind": "drawing", "title": "Sketch: shadow and light on soft UI","date": "01 Oct", "tags": "Design · UI",        "vis": "public" },
+  { "id": "rag-ft",      "kind": "concept", "title": "RAG versus fine-tuning",            "date": "28 Sep", "tags": "AI · architecture",   "vis": "public" },
+  { "id": "local-first", "kind": "source",  "title": "Reading list: local-first software","date": "25 Sep", "tags": "Software · reading",  "domain": "[SOURCE DOMAIN]", "vis": "public" },
+  { "id": "goals-q1",    "kind": "note",    "title": "Learning goals for next quarter",   "date": "13 Oct", "tags": "Planning",            "excerpt": "What I want to be able to do by January, in order of importance, and what I will drop to make room…", "vis": "private" },
+  { "id": "rough-idea",  "kind": "concept", "title": "Rough idea, not ready to share",    "date": "09 Oct", "tags": "Ideas",               "vis": "private" },
+  { "id": "unfinished",  "kind": "drawing", "title": "Sketch: unfinished layout",         "date": "02 Oct", "tags": "Design · draft",      "vis": "private" }
+]
