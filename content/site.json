@@ -2,9 +2,9 @@
   "footerNote": "Sample entries shown — replace with your own",
   "nav": [
     { "id": "archive",  "label": "Archive",      "href": "index.html",    "vis": "public" },
-    { "id": "learning", "label": "Learning",     "href": "learning.html", "vis": "private" },
+    { "id": "learning", "label": "Learning",     "href": "learning.html", "vis": "public" },
     { "id": "about",    "label": "About",        "href": "about.html",    "vis": "public" },
-    { "id": "cave",     "label": "{men's-cave}", "href": "cave.html",     "vis": "private", "locked": true }
+    { "id": "cave",     "label": "{men's-cave}", "href": "cave.html",     "vis": "public" }
   ],
   "regions": [
     { "id": "hero-list", "label": "Hero list: notes, drawings, concepts, sources", "kind": "heading", "vis": "public" },
@@ -12,5 +12,5 @@
     { "id": "topics",    "label": "Topics sidebar",                                 "kind": "feature", "vis": "public" },
     { "id": "find-me",   "label": "About: Find me (GitHub and emails)",             "kind": "heading", "vis": "public" }
   ],
-  "entryVis": {}
+  "entryVis": { "goals-q1": "public", "rough-idea": "public", "unfinished": "public" }
 }
