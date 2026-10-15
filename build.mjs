@@ -5,8 +5,6 @@ import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, readdirSync } f
 import { webcrypto as crypto } from 'node:crypto';
 
 const pass = process.env.PASSPHRASE;
-if (!pass) { console.error('Set PASSPHRASE, e.g.  PASSPHRASE="four random words here" node build.mjs'); process.exit(1); }
-if (pass.trim().split(/\s+/).length < 4 && pass.length < 20) console.warn('Warning: short passphrase. Anyone can try guesses offline against vault.json, so use 4+ random words.');
 
 const read = (p) => JSON.parse(readFileSync(p, 'utf8'));
 const site = read('content/site.json');
@@ -30,7 +28,7 @@ const svg = '<svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hi
 const header = (page) => `<header class="wrap top"><a class="brand" href="index.html">${svg}<span>Tadashi / Archive</span></a><nav class="main">${
   navPublic.map((n) => {
     const here = n.href === page ? ' aria-current="page"' : '';
-    if (n.id === 'archive' && page === 'index.html') return `<button type="button" class="navlink" data-nav="archive" data-pos="${n.pos}" data-archive${here}>${n.label}</button>`;
+    if (anyPrivate && n.id === 'archive' && page === 'index.html') return `<button type="button" class="navlink" data-nav="archive" data-pos="${n.pos}" data-archive${here}>${n.label}</button>`;
     return `<a href="${n.href}" data-nav="${n.id}" data-pos="${n.pos}"${here}>${n.label}</a>`;
   }).join('')
 }<button type="button" class="btn" data-theme-toggle>Dark</button></nav></header>`;
@@ -47,6 +45,10 @@ function applyRegions(html, page) {
     return `<div data-slot="${id}" hidden></div>`;
   });
 }
+
+const anyPrivate = navPrivate.length > 0 || privEntries.length > 0 || Object.values(regionVis).includes('private');
+if (anyPrivate && !pass) { console.error('Something is marked private, so a passphrase is needed. Set PASSPHRASE, e.g.  PASSPHRASE="four random words here" node build.mjs  (or mark everything public in content/site.json).'); process.exit(1); }
+if (anyPrivate && pass.trim().split(/\s+/).length < 4 && pass.length < 20) console.warn('Warning: short passphrase. Anyone can try guesses offline against vault.json, so use 4+ random words.');
 
 rmSync('dist', { recursive: true, force: true });
 mkdirSync('dist', { recursive: true });
@@ -67,11 +69,17 @@ const cfg = {
 };
 const payload = { nav: navPrivate, regions: vaultRegions, entries: privEntries, learning, cfg };
 
+if (!anyPrivate) {
+  // Everything is public: no vault, no passphrase. Pages read data.json directly.
+  writeFileSync('dist/data.json', JSON.stringify({ learning, cfg }));
+} else {
 const salt = crypto.getRandomValues(new Uint8Array(16));
 const iv = crypto.getRandomValues(new Uint8Array(12));
 const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass.normalize('NFKC').trim()), 'PBKDF2', false, ['deriveKey']);
 const key = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: ITER, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt']);
 const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(JSON.stringify(payload)));
 writeFileSync('dist/vault.json', JSON.stringify({ v: 1, iter: ITER, salt: b64(salt), iv: b64(iv), ct: b64(new Uint8Array(ct)) }));
+
+}
 
 console.log(`Built dist/: ${pubEntries.length} public entries, ${privEntries.length} private (encrypted), ${navPrivate.length} private nav items, ${Object.keys(vaultRegions).length} private regions.`);
