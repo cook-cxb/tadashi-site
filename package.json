@@ -1,2 +1,2 @@
-{ "name": "tadashi-archive", "private": true, "type": "module",
+{ "name": "tadashi-archive", "private": true, "type": "module", "engines": { "node": ">=18" },
   "scripts": { "build": "node build.mjs", "serve": "npx --yes serve dist" } }

@@ -4,14 +4,17 @@ Static personal archive. Public pages are plain HTML. Everything private (the Le
 private entries, any region you mark private) is encrypted into `dist/vault.json` and only decrypted in the
 browser after the passphrase box on Archive.
 
-## Use
-1. `PASSPHRASE="four random words here" node build.mjs`   (Node 18+, no dependencies)
-2. Preview: `npx serve dist` (it must be served over http, not opened as a file)
-3. Publish the **contents of `dist/`** to GitHub Pages (e.g. a public repo named `cook-cxb.github.io`).
+## Deploy on Vercel (private repo)
+Vercel builds the site for you, so only the built `dist/` is ever served; `content/` stays in your private repo.
+1. Push this folder to a **private** GitHub repo.
+2. Vercel -> Add New -> Project -> import the repo. Framework preset: **Other** (`vercel.json` already sets build command `node build.mjs` and output `dist`).
+3. Before deploying: Settings -> Environment Variables -> add `PASSPHRASE` = your passphrase (Production + Preview). Mark it Sensitive.
+4. Deploy. Every `git push` rebuilds, so adding an entry is: edit JSON, commit, push.
+5. Domain: Project -> Settings -> Domains -> add `aizaz.rgtmianwali.com`. At the DNS for `rgtmianwali.com`, add the record Vercel shows (for a subdomain it is a CNAME for `aizaz`; use the exact value Vercel displays). HTTPS is automatic.
+6. To change the passphrase: edit `PASSPHRASE` in Vercel and redeploy.
 
-## Keep two repos
-- **Source repo (PRIVATE)**: this whole folder. `content/` holds your private notes and learning log in plain text.
-- **Publish repo (public)**: only `dist/`. Never push `content/` to a public repo.
+## Local preview
+`PASSPHRASE="four random words here" node build.mjs && npx serve dist` (must be served over http, not opened as a file).
 
 ## Edit content
 - `content/entries.json` — cards on Home (`vis`: public/private)
